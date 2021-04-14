@@ -91,7 +91,7 @@ class Laporan extends CI_Controller
         $pdf->Image($background, 0, 0, 297, 210, 'jpeg', '', '', true, 800, '', false, false, 0, false, false, true);
 
         $pdf->SetAutoPageBreak(false, 0);
-        $pdf->SetFont('times', 'B', 12);
+        $pdf->SetFont('times', 12);
         // // $pdf->SetY(95);
         $pdf->setY(40);
 
@@ -218,7 +218,7 @@ class Laporan extends CI_Controller
 
     // report Daftar Hadir dengan databese tb_peserta dengan kondisi id dari kolom duration_start & duration_end
     // Full otomatis Fix
-    public function reportbydate($id = 2)
+    public function reportbydate($id = 1)
     {
         $data['peserta'] = $this->lp->getAll();
         $data['durasi'] = $this->lp->getAllbyid($id);
@@ -226,13 +226,13 @@ class Laporan extends CI_Controller
         foreach ($data['durasi'] as $d) {
             $awal = new DateTime($d['duration_start']);
             $akhir = new DateTime($d['duration_end']);
-            $selisih = $awal->diff($akhir);
+            $selisih = date_diff($awal, $akhir);
         }
         $taw = $awal->format(' d ');
         $tak = $akhir->format(' d ');
         $bln = $awal->format(' F ');
         $thn = $awal->format(' Y ');
-        $col = $selisih->d;
+        $col = $selisih->d + 1;
 
         $materi = "Networking";
         $periode = $taw . "-" . $tak . $bln . $thn;
@@ -243,7 +243,9 @@ class Laporan extends CI_Controller
         $pdf->setPrintFooter(false);
         $pdf->setPrintHeader(false);
         $pdf->AddPage();
-        $pdf->SetAutoPageBreak(false, 0);
+        // $pdf->SetAutoPageBreak(false, 0);
+        $pdf->SetAutoPageBreak(true, 0);
+
         $pdf->setCellPaddings(0, 0, 0, 0);
         $pdf->SetMargins(PDF_MARGIN_LEFT - 15, PDF_MARGIN_TOP - 29, PDF_MARGIN_RIGHT - 16);
         $pdf->Image($background, 0, 0, 297, 210, 'jpeg', '', '', true, 800, '', false, false, 0, false, false, true);
@@ -300,7 +302,7 @@ class Laporan extends CI_Controller
         $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
-    public function operasi($id = 2)
+    public function operasi($id = 1)
     {
         $data['durasi'] = $this->lp->getAllbyid($id);
 
@@ -318,5 +320,27 @@ class Laporan extends CI_Controller
 
         echo $selisih->d;
         echo " Hari";
+    }
+
+    public function multiPages()
+    {
+
+        $data['peserta'] = $this->lp->getAll();
+        $n = 3;
+
+        $pdf = new TCPDF('L', 'mm', 'a4', true, 'UTF-8', false);
+        $background = "./images/r.jpeg";
+        $pdf->setPrintFooter(false);
+        $pdf->setPrintHeader(false);
+
+        for ($i = 0; $i < $n; $i++) {
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(false, 0);
+            $pdf->setCellPaddings(0, 0, 0, 0);
+            $pdf->SetMargins(PDF_MARGIN_LEFT - 15, PDF_MARGIN_TOP - 29, PDF_MARGIN_RIGHT - 16);
+            $pdf->Image($background, 0, 0, 297, 210, 'jpeg', '', '', true, 800, '', false, false, 0, false, false, true);
+        }
+
+        $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 }
