@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// fungsi tcpdf untuk single page
 class Laporan extends CI_Controller
 {
-    // report simpel data 
     public function report()
     {
         // $no = 1;
@@ -69,7 +69,6 @@ class Laporan extends CI_Controller
         $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
-    // report Daftar Hadir tanpa database tb_durasi
     public function report1()
     {
         $materi = "Networking";
@@ -141,7 +140,6 @@ class Laporan extends CI_Controller
         $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
-    // report Daftar Hadir dengan database tb_durasi
     public function report2()
     {
         $materi = "Networking";
@@ -216,8 +214,6 @@ class Laporan extends CI_Controller
         $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
-    // report Daftar Hadir dengan databese tb_peserta dengan kondisi id dari kolom duration_start & duration_end
-    // Full otomatis Fix
     public function reportbydate($id = 1)
     {
         $data['peserta'] = $this->lp->getAll();
@@ -320,27 +316,5 @@ class Laporan extends CI_Controller
 
         echo $selisih->d;
         echo " Hari";
-    }
-
-    public function multiPages()
-    {
-
-        $data['peserta'] = $this->lp->getAll();
-        $n = 3;
-
-        $pdf = new TCPDF('L', 'mm', 'a4', true, 'UTF-8', false);
-        $background = "./images/r.jpeg";
-        $pdf->setPrintFooter(false);
-        $pdf->setPrintHeader(false);
-
-        for ($i = 0; $i < $n; $i++) {
-            $pdf->AddPage();
-            $pdf->SetAutoPageBreak(false, 0);
-            $pdf->setCellPaddings(0, 0, 0, 0);
-            $pdf->SetMargins(PDF_MARGIN_LEFT - 15, PDF_MARGIN_TOP - 29, PDF_MARGIN_RIGHT - 16);
-            $pdf->Image($background, 0, 0, 297, 210, 'jpeg', '', '', true, 800, '', false, false, 0, false, false, true);
-        }
-
-        $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 }

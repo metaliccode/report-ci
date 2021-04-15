@@ -7,7 +7,7 @@ class LaporanModel extends CI_Model
         return $this->db->get('tb_peserta')->result_array();
     }
 
-    public function getAllbyid($id = 1)
+    public function getAllbyid($id)
     {
         $q = "SELECT duration_start, duration_end FROM tb_peserta WHERE
             id='$id' LIMIT 1";
