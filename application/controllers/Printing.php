@@ -79,7 +79,7 @@ class Printing extends CI_Controller
 
         $pdf->writeHTML($tbl, true, false, true, false, '');
 
-        $pdf->Output('example_051.pdf', 'I');
+        $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
     // Print daftar Hadir dengan database tb_durasi sebagai kolom, 
@@ -158,7 +158,7 @@ class Printing extends CI_Controller
 
         $pdf->writeHTML($tbl, true, false, true, false, '');
 
-        $pdf->Output('example_051.pdf', 'I');
+        $pdf->Output('Daftar Peserta.pdf', 'I');
     }
 
     // Print Daftar Hadir dengan databese tb_peserta dengan kondisi id dari kolom duration_start & duration_end pada tb_peserta
